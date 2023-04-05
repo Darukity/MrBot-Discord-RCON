@@ -34,7 +34,7 @@ git clone git@github.com:Darukity/MrBot-Discord-RCON.git
 
 cd MrBot-Discord-RCON
 
-nmp i
+npm i
 ```
 After the installation is complete you will need to create a config.js file into the bot folder the format is the folowing :
 ```
