@@ -49,4 +49,4 @@ module.exports = {
 
 }
 ```
-The Rcon port and password can be seted up in the minecrfat server configuration.
+The Rcon port and password can be seted up in the minecraft server configuration.
