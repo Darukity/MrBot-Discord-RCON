@@ -39,7 +39,6 @@ const rest = new REST({ version: '10' }).setToken(config.token);
 
 const prefix = "!"
 
-
 bot.login(config.token)
 
 bot.on("ready", async() => {
@@ -82,6 +81,15 @@ bot.on("ready", async() => {
         getInfo()
 
 })
+
+//{/} commands handle
+bot.on('interactionCreate', async interaction => {
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === 'ping') {
+    await interaction.reply('Pong!');
+  }
+});
 
 bot.on("messageCreate", async (msg) => {
     if(msg.author.id == bot.application.id){return}
