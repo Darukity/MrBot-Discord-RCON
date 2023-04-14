@@ -89,38 +89,87 @@ bot.on('interactionCreate', async interaction => {
   if (interaction.commandName === 'ping') {
     await interaction.reply('Pong!');
   }
+
+  if(interaction.commandName === 'players'){
+    if(interaction.channelId != config.rcon_channel){
+      mcServer.queryFull(config.mc_server_ip, config.mc_server_port)
+      .then((result) => {
+          parsedJSON = JSON.parse(JSON.stringify(result))
+          message = "";
+          players = parsedJSON.players.list;
+
+          if(players[0] != undefined){
+              for(let i=0;i<players.length; i++){
+                  message += players[i];
+                  if(i != players.length-1){
+                      message += ", "
+                  }
+              }
+              interaction.reply(`Liste des joueurs: ${message}`)
+          } else {
+            interaction.reply(`Aucun joueur n'est connecté`)
+          }        
+      })
+      .catch((error) => console.error(error));
+    }
+  }
+
+  if(interaction.commandName === 'stats'){
+    stats = JSON.parse(fs.readFileSync('stats.json'));
+    const wList = stats[interaction.user.username][0]['wList'];
+    let embed = sortWordsByFrequency(wList)
+    interaction.reply({embeds: [embed]})
+  }
+
+  if(interaction.commandName === 'help'){
+    const keys = Object.keys(commands.commandsList);
+    var embed = new EmbedBuilder()
+    .setColor('#0099ff')
+    .setTitle('Liste des commandes')
+    .addFields(
+      commands.commandsList.map(command => ({
+            name: command.name,
+            value: command.description,
+        }))
+    );
+    interaction.reply({embeds: [embed]})
+  }
+
+  function sortWordsByFrequency(wordsDict) {
+    // Créer un tableau à partir des clés de l'objet
+    const keys = Object.keys(wordsDict);
+    // Trier les clés par ordre décroissant de leur valeur
+    keys.sort((a, b) => b - a);
+    // Créer un nouveau tableau trié par ordre décroissant de la fréquence d'utilisation
+    var embed = new EmbedBuilder()
+    .setColor(0x0099FF)
+    .setTitle("Voici le top 5 des mots que tu as le plus utilisé")
+    let index = 1
+    keys.forEach((key) => {
+      wordsDict[key].forEach((word) => {
+      });
+      if(index <= 5) {
+        let wordAll = wordsDict[key].join(" ")
+        if(!wordAll == "") {
+          //console.log(wordAll, index)
+          embed.addFields({name: `top ${index.toString()}`, value: wordAll})
+          index ++
+        }
+      }
+    });
+    if(index != 1){
+      return embed
+    } else {
+      interaction.reply("t'as jamais parlé sur le serveur avant cette commande ou chuis p'tet amnésique jsp")
+    }
+  }
+  
 });
 
 bot.on("messageCreate", async (msg) => {
     if(msg.author.id == bot.application.id){return}
     if(msg.webhookId) return;
     console.log(msg.content)
-
-    if(msg.content === prefix + "players"){
-      if(msg.channelId != config.rcon_channel){
-        mcServer.queryFull(config.mc_server_ip, config.mc_server_port)
-        .then((result) => {
-            parsedJSON = JSON.parse(JSON.stringify(result))
-            message = "";
-            players = parsedJSON.players.list;
-
-            if(players[0] != undefined){
-                for(let i=0;i<players.length; i++){
-                    message += players[i];
-                    if(i != players.length-1){
-                        message += ", "
-                    }
-                }
-                msg.reply(`Liste des joueurs: ${message}`)
-            } else {
-                msg.reply(`Aucun joueur n'est connecté`)
-            }        
-        })
-        .catch((error) => console.error(error));
-      } else {
-        msg.delete();
-      }
-    }
 
     //Rcon Console
     if(msg.channelId === config.rcon_channel) {
@@ -164,16 +213,6 @@ bot.on("messageCreate", async (msg) => {
           console.error(`Failed to connect to Minecraft server via RCON: ${error}`)
         })
       }
-    }
-
-    if(msg.content === prefix + "stats"){
-        stats = JSON.parse(fs.readFileSync('stats.json'));
-        const wList = stats[msg.author.username][0]['wList'];
-        let embed = sortWordsByFrequency(wList)
-        msg.reply({embeds: [embed]})
-    }
-    if(msg.content === prefix + "help"){
-        return;
     }
 
     //récolte des stats
@@ -221,36 +260,5 @@ bot.on("messageCreate", async (msg) => {
           fs.writeFileSync('stats.json', JSON.stringify(stats));
         }
       }
-    }
-
-    function sortWordsByFrequency(wordsDict) {
-      // Créer un tableau à partir des clés de l'objet
-      const keys = Object.keys(wordsDict);
-      // Trier les clés par ordre décroissant de leur valeur
-      keys.sort((a, b) => b - a);
-      // Créer un nouveau tableau trié par ordre décroissant de la fréquence d'utilisation
-      var embed = new EmbedBuilder()
-      .setColor(0x0099FF)
-      .setTitle("Voici le top 5 des mots que tu a le plus utilisé")
-      let index = 1
-      keys.forEach((key) => {
-        wordsDict[key].forEach((word) => {
-
-        });
-        if(index <= 5) {
-          let wordAll = wordsDict[key].join(" ")
-          if(!wordAll == "") {
-            //console.log(wordAll, index)
-            embed.addFields({name: `top ${index.toString()}`, value: wordAll})
-            index ++
-          }
-        }
-      });
-      if(index != 1){
-        return embed
-      } else {
-        msg.reply("t'as jamais parlé sur le serveur avant cette commande ou chuis p'tet amnésique jsp")
-      }
-    }
-    
+    }    
 })
