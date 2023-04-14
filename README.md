@@ -45,7 +45,7 @@ module.exports = {
     mc_server_port: <the port of the minecraft server>,
     rcon_port: <the port of the rcon server>,
     rcon_password: "<the password of the RCON server>",
-    dicord_webhook_url: '<the discord webhook url>'
+    dicord_webhook_url: '<the discord webhook url>',
     client_id: '<the id of your discord bot>'
 }
 ```
