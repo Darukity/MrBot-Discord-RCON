@@ -39,14 +39,14 @@ npm i
 After the installation is complete you will need to create a config.js file into the bot folder the format is the folowing :
 ```
 module.exports = {
-    tocken: '<your discord bot tocken>',
+    token: '<your discord bot token>',
     rcon_channel: '<the discord channel id for the chat channel>',
     mc_server_ip: '<ip of the minecraft server>',
     mc_server_port: <the port of the minecraft server>,
     rcon_port: <the port of the rcon server>,
     rcon_password: "<the password of the RCON server>",
     dicord_webhook_url: '<the discord webhook url>'
-
+    client_id: '<the id of your discord bot>'
 }
 ```
 The Rcon port and password can be seted up in the minecraft server configuration.

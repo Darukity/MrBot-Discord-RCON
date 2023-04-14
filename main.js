@@ -1,11 +1,11 @@
 const Discord = require('discord.js')
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, REST, Routes, ActivityType } = require('discord.js');
 const bot = new Discord.Client({intents: 3276799})
 const config = require('./config')
+const commands = require('./commands')
 
 const fs = require('fs');
 const request = require('request');
-const { ActivityType } = require('discord.js');
 
 const mcServer = require('minecraft-server-util');
 const Rcon = require('rcon-client').Rcon;
@@ -22,10 +22,25 @@ const tail = new Tail('../logs/latest.log');
 const webhookUrl = config.dicord_webhook_url;
 const axios = require('axios')
 
+//load {/} commands
+const rest = new REST({ version: '10' }).setToken(config.token);
+
+(async () => {
+  try {
+    console.log('Started refreshing application (/) commands.');
+
+    await rest.put(Routes.applicationCommands(config.client_id), { body: commands.commandsList });
+
+    console.log('Successfully reloaded application (/) commands.');
+  } catch (error) {
+    console.error(error);
+  }
+})();
+
 const prefix = "!"
 
 
-bot.login(config.tocken)
+bot.login(config.token)
 
 bot.on("ready", async() => {
     console.log(`${bot.user.tag} est connecté`)
