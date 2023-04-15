@@ -1,5 +1,5 @@
 # About the project :
-This bot is used in my discord server with friends, with his help you can see how many peoples are connected to my server and with the '!players' command executed in the right channel you can see who is connected at any moment. It also feature a minecraft console interface with the RCON port and a lot of others commands
+This bot is used in my discord server with friends, with it you can see who is connected at any moment on my minecraft server. It also feature a minecraft console interface with the RCON port and many other usefull commands
 
 # Prerequire
 
@@ -45,7 +45,7 @@ module.exports = {
     mc_server_port: <the port of the minecraft server>,
     rcon_port: <the port of the rcon server>,
     rcon_password: "<the password of the RCON server>",
-    dicord_webhook_url: '<the discord webhook url>'
+    dicord_webhook_url: '<the discord webhook url>',
     client_id: '<the id of your discord bot>'
 }
 ```
