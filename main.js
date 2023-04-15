@@ -135,6 +135,16 @@ bot.on('interactionCreate', async interaction => {
     interaction.reply({embeds: [embed]})
   }
 
+  if(interaction.commandName === 'roll'){
+    if(interaction.options.get('int')){
+      let res = randomIntFromZeroToInt(interaction.options.get('int').value)
+      interaction.reply(`${interaction.user.username} a obtenu ${res} points`)
+    } else {
+      let res = randomIntFromZeroToInt(10)
+      interaction.reply(`${interaction.user.username} a obtenu ${res} points`)
+    }
+  }
+
   function sortWordsByFrequency(wordsDict) {
     // Créer un tableau à partir des clés de l'objet
     const keys = Object.keys(wordsDict);
@@ -164,6 +174,10 @@ bot.on('interactionCreate', async interaction => {
     }
   }
   
+  function randomIntFromZeroToInt(int) {
+    return Math.floor(Math.random() * int)
+  }
+
 });
 
 bot.on("messageCreate", async (msg) => {

@@ -16,5 +16,17 @@ module.exports = {
             name: 'help',
             description: 'Affiche la liste des commandes',
         },
+        {
+            name: 'roll',
+            description: 'Répond un nombre entre 0 et le nombre spécifié (vide = 10)',
+            options: [
+                {
+                    name: 'int',
+                    description: 'chiffre ou nombre',
+                    type: 4,
+                    required: false,
+                },
+            ],
+        },
     ]
 }
