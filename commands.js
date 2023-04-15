@@ -28,5 +28,9 @@ module.exports = {
                 },
             ],
         },
+        {
+            name: 'source',
+            description: 'Affiche le lien vers le code source du bot',
+        },
     ]
 }

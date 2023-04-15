@@ -134,6 +134,10 @@ bot.on('interactionCreate', async interaction => {
     );
     interaction.reply({embeds: [embed]})
   }
+  
+  if(interaction.commandName === 'source'){
+    interaction.reply('voici le lien vers mon code source: https://github.com/Darukity/MrBot-Discord-RCON')
+  }
 
   if(interaction.commandName === 'roll'){
     if(interaction.options.get('int')){
