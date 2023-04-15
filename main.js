@@ -66,19 +66,29 @@ bot.on("ready", async() => {
           console.error(error);
       });
     });
-    async function getInfo() {
+    async function setStatus() {
+        let status = 0;
         while(true){
-            mcServer.queryFull(config.mc_server_ip, config.mc_server_port)
-                .then((result) => {
+          switch(status) {
+            case 0: {
+              mcServer.queryFull(config.mc_server_ip, config.mc_server_port)
+                  .then((result) => {
                     parsedJSON = JSON.parse(JSON.stringify(result))
                     bot.user.setPresence({activities: [{type: ActivityType.Watching, name:`serveur mc: ${parsedJSON.players.online}/${parsedJSON.players.max} joueurs connectés`}]})
-                })
-                .catch((error) => console.error(error));
-            await new Promise(resolve => setTimeout(resolve, 30000));
-            //console.log(`updated`)
+                    status = 1;
+                  })
+                  .catch((error) => console.error(error));
+                }
+            case 1: {
+              bot.user.setPresence({activities: [{type: ActivityType.Playing, name:`/help`}]})
+              status = 0;
+            }
+          }
+          await new Promise(resolve => setTimeout(resolve, 15000));
+          //console.log(`updated`)
         }
       }
-        getInfo()
+        setStatus()
 
 })
 
@@ -134,7 +144,7 @@ bot.on('interactionCreate', async interaction => {
     );
     interaction.reply({embeds: [embed]})
   }
-  
+
   if(interaction.commandName === 'source'){
     interaction.reply('voici le lien vers mon code source: https://github.com/Darukity/MrBot-Discord-RCON')
   }
