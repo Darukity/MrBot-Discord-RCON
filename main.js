@@ -116,7 +116,7 @@ bot.on('interactionCreate', async interaction => {
 
   if(interaction.commandName === 'stats'){
     stats = JSON.parse(fs.readFileSync('stats.json'));
-    const wList = stats[interaction.user.username][0]['wList'];
+    const wList = stats[interaction.user.id][0]['wList'];
     let embed = sortWordsByFrequency(wList)
     interaction.reply({embeds: [embed]})
   }
@@ -217,9 +217,9 @@ bot.on("messageCreate", async (msg) => {
 
     //récolte des stats
     stats = JSON.parse(fs.readFileSync('stats.json'));
-    var index = Object.keys(stats).indexOf(msg.author.username);
+    var index = Object.keys(stats).indexOf(msg.author.id);
     if(index == -1) {
-      stats[msg.author.username] = [{ "wList": {} }];
+      stats[msg.author.id] = [{ "wList": {} }];
 
       // Écrire l'objet JSON mis à jour dans le fichier
       let updatedData = JSON.stringify(stats);
@@ -233,7 +233,7 @@ bot.on("messageCreate", async (msg) => {
       if(msg.content.startsWith(prefix)) return;
       let words = msg.content.replace(/[!?._*,'"]/g, "");
       words = words.split(" ")
-      const wList = stats[msg.author.username][0]['wList'];
+      const wList = stats[msg.author.id][0]['wList'];
       motsVides = ["cest", "a", "à", "afin", "alors", "après", "au", "aucun", "aussi", "autre", "avant", "avec", "avoir", "car", "ce", "cela", "ces", "ceux", "chaque", "ci", "comme", "comment", "dans", "de", "des", "du", "dedans", "dehors", "depuis", "devrait", "doit", "donc", "dont", "du", "elle", "elles", "en", "encore", "entre", "est", "et", "eu", "eux", "faire", "fois", "font", "hors", "ici", "il", "ils", "je", "juste", "la", "le", "les", "leur", "là", "ma", "maintenant", "mais", "me", "même", "mes", "mine", "moi", "mon", "ne", "ni", "non", "notre", "nous", "ou", "où", "par", "parce", "pas", "peu", "peut", "plupart", "pour", "pourquoi", "quand", "que", "quel", "quelle", "quelles", "quels", "qui", "sa", "sans", "se", "sera", "serait", "si", "sien", "soi", "soit", "son", "sont", "sous", "suivre", "sur", "ta", "te", "tellement", "tels", "tes", "ton", "tous", "tout", "trop", "très", "tu", "un", "une", "valeur", "voici", "voie", "voient", "vois", "voit", "vu", "vôtre", "sa","ses"]
       for (let word of words) {
         word = word.toLowerCase()
