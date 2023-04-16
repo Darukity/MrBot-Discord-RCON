@@ -173,7 +173,7 @@ bot.on('interactionCreate', async interaction => {
       wordsDict[key].forEach((word) => {
       });
       if(index <= 5) {
-        let wordAll = wordsDict[key].join(" ")
+        let wordAll = wordsDict[key].splice(0,45).join(" ")
         if(!wordAll == "") {
           //console.log(wordAll, index)
           embed.addFields({name: `top ${index.toString()}`, value: wordAll})
