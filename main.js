@@ -189,7 +189,7 @@ bot.on('interactionCreate', async interaction => {
   }
   
   function randomIntFromZeroToInt(int) {
-    return Math.floor(Math.random() * int)
+    return Math.floor(Math.random() * (Math.abs(int) + 1));
   }
 
 });
